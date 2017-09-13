@@ -8,11 +8,11 @@ Configuration
 etc/emq_doordu.conf:
 
 ```
-## Expiry interval. Never expired if 0
+## Message expiry interval. Never expired if 0
 ## h - hour
 ## m - minute
 ## s - second
-doordu.expiry_interval = 0
+doordu.message_expiry_interval = 0
 ```
 
 License
