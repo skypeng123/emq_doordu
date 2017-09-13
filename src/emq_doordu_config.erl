@@ -54,4 +54,4 @@ unregister_config() ->
 %% Internal Functions
 %%--------------------------------------------------------------------
 keys() ->
-    ["doordu.expiry_interval"].
+    ["doordu.message_expiry_interval"].
