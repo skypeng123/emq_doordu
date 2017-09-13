@@ -23,7 +23,7 @@ Apache License Version 2.0
 Author
 ------
 
-Jip at doordu.com
+Jipeng at doordu.com
 
 
 Plugin and Hooks
