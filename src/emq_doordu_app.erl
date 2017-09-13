@@ -22,8 +22,8 @@
 -export([start/2, stop/1]).
 
 start(_StartType, _StartArgs) ->
-    Env = application:get_all_env(emq_retainer),
-    {ok, Sup} = emq_plugin_template_sup:start_link(),
+    Env = application:get_all_env(emq_doordu),
+    {ok, Sup} = emq_doordu:start_link(),
     emq_doordu:load(Env),
     emq_doordu_config:register(),
     {ok, Sup}.
