@@ -1,0 +1,13 @@
+%%-*- mode: erlang -*-
+%% Doordu config mapping
+
+{mapping, "doordu.call_expiry_interval", "emq_doordu.call_expiry_interval", [
+  {default, 0},
+  {datatype, [integer, {duration, ms}]}
+]}.
+
+{mapping, "doordu.call_cmd", "emq_doordu.call_cmd", [
+  {default, ""},
+  {datatype, string},
+]}.
+
