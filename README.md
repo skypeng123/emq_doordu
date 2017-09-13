@@ -12,7 +12,7 @@ etc/emq_doordu.conf:
 ## h - hour
 ## m - minute
 ## s - second
-doordu.message_expiry_interval = 0
+doordu.expiry_interval = 0
 ```
 
 License

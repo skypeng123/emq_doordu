@@ -1,7 +1,7 @@
 %%-*- mode: erlang -*-
 %% Doordu config mapping
 
-{mapping, "doordu.message_expiry_interval", "emq_doordu.message_expiry_interval", [
+{mapping, "doordu.expiry_interval", "emq_doordu.expiry_interval", [
   {default, 0},
   {datatype, [integer, {duration, ms}]}
 ]}.
