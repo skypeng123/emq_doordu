@@ -14,7 +14,7 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 
--module(emq_plugin_template_app).
+-module(emq_doordu_app).
 
 -behaviour(application).
 
@@ -29,5 +29,5 @@ start(_StartType, _StartArgs) ->
     {ok, Sup}.
 
 stop(_State) ->
-    emq_doordu:unload().
+    emq_doordu:unload(),
     emq_doordu:unregister().
