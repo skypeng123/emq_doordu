@@ -34,7 +34,7 @@
 
 %% Called when the plugin application start
 load(Env) ->
-    emqttd:hook('client.connected', fun ?MODULE:on_client_connected/3, [Env]),
+    emqttd:hook('client.connected', fun ?MODULE:on_client_connected/3, [Env]).
     %% emqttd:hook('client.disconnected', fun ?MODULE:on_client_disconnected/3, [Env]),
     %% emqttd:hook('client.subscribe', fun ?MODULE:on_client_subscribe/4, [Env]),
     %% emqttd:hook('client.unsubscribe', fun ?MODULE:on_client_unsubscribe/4, [Env]),
@@ -95,7 +95,7 @@ on_message_acked(ClientId, Username, Message, _Env) ->
 
 %% Called when the plugin application stop
 unload() ->
-    emqttd:unhook('client.connected', fun ?MODULE:on_client_connected/3),
+    emqttd:unhook('client.connected', fun ?MODULE:on_client_connected/3).
     %% emqttd:unhook('client.disconnected', fun ?MODULE:on_client_disconnected/3),
     %% emqttd:unhook('client.subscribe', fun ?MODULE:on_client_subscribe/4),
     %% emqttd:unhook('client.unsubscribe', fun ?MODULE:on_client_unsubscribe/4),
