@@ -86,7 +86,7 @@ on_message_publish(Message, _Env) ->
     Payload = Message#mqtt_message.payload,
     PayloadData = jsx:decode(Payload),
     io:format("Payload ~s~n", [Payload]),
-    io:format("Payload cmd~s~n", [PayloadData.cmd]),
+    io:format("Payload cmd~s~n", [PayloadData["cmd"]]),
     {ok, Message}.
 
 on_message_delivered(ClientId, Username, Message, _Env) ->
