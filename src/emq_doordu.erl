@@ -92,7 +92,7 @@ on_message_publish(Message, _Env) ->
     if 
         Cmd == "makeCall" ->
             io:format("Payload expiredAt: ~w~n", [ExpiredAt])
-    end.    
+    end, 
     {ok, Message}.
 
 on_message_delivered(ClientId, Username, Message, _Env) ->
