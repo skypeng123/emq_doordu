@@ -84,9 +84,9 @@ on_message_publish(Message = #mqtt_message{topic = <<"$SYS/", _/binary>>}, _Env)
 on_message_publish(Message, _Env) ->
     io:format("publish ~s~n", [emqttd_message:format(Message)]),
     Payload = Message#mqtt_message.payload,
-    PayloadData = jsx:decode(Payload),
-    io:format("Payload ~s~n", [Payload]),
-    io:format("Payload cmd~s~n", [PayloadData["cmd"]]),
+    PayloadData = jsx:decode(Payload, [return_maps]),
+    io:format("Payload: ~s~n", [Payload]),
+    io:format("Payload cmd: ~s~n", [maps:get(cmd,PayloadData)]),
     {ok, Message}.
 
 on_message_delivered(ClientId, Username, Message, _Env) ->
