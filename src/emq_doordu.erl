@@ -105,7 +105,7 @@ on_message_delivered(ClientId, Username, Message, _Env) ->
                         false ->
                             io:format("message not expired: ~w ~w ~n", [ExpiredAt,Nowtime]),
                             {ok, Message};
-                    end             
+                    end,             
             end,
             {ok, Message};
         false ->
