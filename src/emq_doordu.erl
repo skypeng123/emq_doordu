@@ -101,11 +101,12 @@ on_message_delivered(ClientId, Username, Message, _Env) ->
                     case ExpiredAt < Nowtime  of
                         true -> 
                             io:format("message expired: ~w ~w ~n", [ExpiredAt,Nowtime]),
-                            {stop, Message};
+                            Ret = stop;                            
                         false ->
                             io:format("message not expired: ~w ~w ~n", [ExpiredAt,Nowtime]),
-                            {ok, Message};
-                    end;            
+                            Ret = ok,                            
+                    end,
+                    {Ret, Message};         
             end,
             {ok, Message};
         false ->
