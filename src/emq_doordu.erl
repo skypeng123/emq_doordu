@@ -100,15 +100,16 @@ on_message_delivered(ClientId, Username, Message, _Env) ->
                     %%有效期小于当前时间，已过期，停止发送消息
                     case ExpiredAt < Nowtime  of
                         true -> 
-                            io:format("message expired: ~w ~w ~n", [ExpiredAt,Nowtime]),
+                            io:format("delivered to client(~s/~s): ~s has expired!(~w/~w) ~n", [Username, ClientId, emqttd_message:format(Message),ExpiredAt,Nowtime]),                       
                             Ret = stop;                            
                         false ->
-                            io:format("message not expired: ~w ~w ~n", [ExpiredAt,Nowtime]),
+                            %%io:format("message not expired: ~w ~w ~n", [ExpiredAt,Nowtime]),
                             Ret = ok                           
                     end,
-                    {Ret, Message}         
-            end,
-            {ok, Message};
+                    {Ret, Message};   
+                Cmd /= <<"makeCall">> ->    
+                    {ok, Message}
+            end;            
         false ->
             {ok, Message}         
     end.    
@@ -119,7 +120,18 @@ on_message_acked(ClientId, Username, Message, _Env) ->
 
 timestamp() ->  
     {M, S, _} = os:timestamp(),  
-    M * 1000000 + S.   
+    M * 1000000 + S.
+
+has_expired(ExpiredAt) ->
+    Nowtime = timestamp(), 
+    case ExpiredAt < Nowtime  of
+        true -> 
+            Ret = stop; 
+        false ->
+            Ret = ok
+    end,
+    {Ret}
+
 
 %% Called when the plugin application stop
 unload() ->
