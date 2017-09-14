@@ -90,14 +90,17 @@ on_message_publish(Message, _Env) ->
             Cmd = maps:get(<<"cmd">>,PayloadData,[]),  
             ExpiredAt = maps:get(<<"expiredAt">>,PayloadData,[]),
             if 
+                %%呼叫检查有效时间
                 Cmd == <<"makeCall">> ->
-                    Nowtime = timestamp(),  
-                    case Nowtime < ExpiredAt of
+                    Nowtime = timestamp(), 
+                    %%有效期小于当前时间，已过期，停止发送消息
+                    case ExpiredAt < Nowtime  of
                         true -> 
                             io:format("Payload expired: ~w~n", [ExpiredAt]),
                             {stop, Message};
                         false ->
-                            io:format("Payload not expired: ~w~n", [ExpiredAt])
+                            io:format("Payload not expired: ~w~n", [ExpiredAt]),
+                            {ok, Message};
                     end, 
                     io:format("Payload expiredAt Nowtime: ~w ~w ~n", [ExpiredAt,Nowtime])                
             end,
