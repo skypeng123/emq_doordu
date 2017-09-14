@@ -94,11 +94,12 @@ on_message_publish(Message, _Env) ->
                     Nowtime = timestamp(),  
                     case Nowtime < ExpiredAt of
                         true -> 
-                            io:format("Payload expired: ~w ~w ~n", [ExpiredAt]),
+                            io:format("Payload expired: ~w~n", [ExpiredAt]),
                             {stop, Message};
                         false ->
-                            io:format("Payload expiredAt: ~w ~w ~n", [ExpiredAt,Nowtime])
-                    end,                   
+                            io:format("Payload not expired: ~w~n", [ExpiredAt])
+                    end, 
+                    io:format("Payload expiredAt Nowtime: ~w ~w ~n", [ExpiredAt,Nowtime])                
             end,
             {ok, Message};
         false ->
