@@ -47,49 +47,49 @@ load(Env) ->
     emqttd:hook('message.acked', fun ?MODULE:on_message_acked/4, [Env]).
 
 on_client_connected(ConnAck, Client = #mqtt_client{client_id = ClientId}, _Env) ->
-    lager:info("client ~s connected, connack: ~w~n", [ClientId, ConnAck]),
+    lager:debug("client ~s connected, connack: ~w~n", [ClientId, ConnAck]),
     {ok, Client}.
 
 on_client_disconnected(Reason, _Client = #mqtt_client{client_id = ClientId}, _Env) ->
-    lager:info("client ~s disconnected, reason: ~w~n", [ClientId, Reason]),
+    lager:debug("client ~s disconnected, reason: ~w~n", [ClientId, Reason]),
     ok.
 
 on_client_subscribe(ClientId, Username, TopicTable, _Env) ->
-    lager:info("client(~s/~s) will subscribe: ~p~n", [ClientId, Username, TopicTable]),
+    lager:debug("client(~s/~s) will subscribe: ~p~n", [ClientId, Username, TopicTable]),
     {ok, TopicTable}.
     
 on_client_unsubscribe(ClientId, Username, TopicTable, _Env) ->
-    lager:info("client(~s/~s) unsubscribe ~p~n", [ClientId, Username, TopicTable]),
+    lager:debug("client(~s/~s) unsubscribe ~p~n", [ClientId, Username, TopicTable]),
     {ok, TopicTable}.
 
 on_session_created(ClientId, Username, _Env) ->
-    lager:info("session(~s/~s) created.", [ClientId, Username]).
+    lager:debug("session(~s/~s) created.", [ClientId, Username]).
 
 on_session_subscribed(ClientId, Username, {Topic, Opts}, _Env) ->
-    lager:info("session(~s/~s) subscribed: ~p~n", [ClientId, Username, {Topic, Opts}]),
+    lager:debug("session(~s/~s) subscribed: ~p~n", [ClientId, Username, {Topic, Opts}]),
     {ok, {Topic, Opts}}.
 
 on_session_unsubscribed(ClientId, Username, {Topic, Opts}, _Env) ->
-    lager:info("session(~s/~s) unsubscribed: ~p~n", [ClientId, Username, {Topic, Opts}]),
+    lager:debug("session(~s/~s) unsubscribed: ~p~n", [ClientId, Username, {Topic, Opts}]),
     ok.
 
 on_session_terminated(ClientId, Username, Reason, _Env) ->
-    io:format("session(~s/~s) terminated: ~p.", [ClientId, Username, Reason]).
+    lager:debug("session(~s/~s) terminated: ~p.", [ClientId, Username, Reason]).
 
 %% transform message and return
 on_message_publish(Message = #mqtt_message{topic = <<"$SYS/", _/binary>>}, _Env) ->
     {ok, Message};
 
 on_message_publish(Message, _Env) ->
-    lager:info("publish ~s~n", [emqttd_message:format(Message)]),
+    lager:debug("publish ~s~n", [emqttd_message:format(Message)]),
     {ok, Message}.
 
 on_message_delivered(ClientId, Username, Message, _Env) ->
-    lager:info("delivered to client(~s/~s): ~s~n", [ClientId, Username, emqttd_message:format(Message)]),
+    lager:debug("delivered to client(~s/~s): ~s~n", [ClientId, Username, emqttd_message:format(Message)]),
     {ok, Message}.
 
 on_message_acked(ClientId, Username, Message, _Env) ->
-    lager:info("client(~s/~s) acked: ~s~n", [ClientId, Username, emqttd_message:format(Message)]),
+    lager:debug("client(~s/~s) acked: ~s~n", [ClientId, Username, emqttd_message:format(Message)]),
     {ok, Message}.
 
 %% Called when the plugin application stop
