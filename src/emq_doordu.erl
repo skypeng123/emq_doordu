@@ -83,17 +83,15 @@ on_message_publish(Message = #mqtt_message{topic = <<"$SYS/", _/binary>>}, _Env)
 
 on_message_publish(Message, _Env) ->
     io:format("publish ~s~n", [emqttd_message:format(Message)]),
-    PayloadData = jsx:decode(Message#mqtt_message.payload, [return_maps]),
-    io:format("PayloadData: ~w~n", [PayloadData]),
-    Cmd = maps:get("cmd",PayloadData),
-    {ok,Cmd}.
-    %%ExpiredAt = maps:get("expiredAt",PayloadData),
-    %%io:format("Payload cmd: ~w~n", [Cmd]),
-    %%if 
-    %%    Cmd == "makeCall" ->
+    PayloadData = jsx:decode(Message#mqtt_message.payload, [return_maps]),    
+    Cmd = maps:get("cmd",PayloadData),    
+    ExpiredAt = maps:get("expiredAt",PayloadData),
+    io:format("Payload cmd: ~w~n", [Cmd]),
+    if 
+        Cmd == "makeCall" ->
             io:format("Payload expiredAt: ~w~n", [ExpiredAt])
-    %%end, 
-    %%{ok, Message}.
+    end, 
+    {ok, Message}.
 
 on_message_delivered(ClientId, Username, Message, _Env) ->
     io:format("delivered to client(~s/~s): ~s~n", [Username, ClientId, emqttd_message:format(Message)]),
