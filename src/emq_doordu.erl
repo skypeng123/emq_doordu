@@ -84,7 +84,9 @@ on_message_publish(Message = #mqtt_message{topic = <<"$SYS/", _/binary>>}, _Env)
 on_message_publish(Message, _Env) ->
     io:format("publish ~s~n", [emqttd_message:format(Message)]),
     Payload = Message#mqtt_message.payload,
+    PayloadData = emq_lwm2m_json:json_to_tlv(Payload),
     io:format("Payload ~s~n", [Payload]),
+    io:format("PayloadData ~s~n", [PayloadData]),
     {ok, Message}.
 
 on_message_delivered(ClientId, Username, Message, _Env) ->
