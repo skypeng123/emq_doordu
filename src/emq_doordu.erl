@@ -91,7 +91,7 @@ on_message_publish(Message, _Env) ->
     io:format("Payload cmd: ~s~n", [maps:get("cmd",PayloadData)]),
     if 
         Cmd == "makeCall" ->
-            io:format("Payload expiredAt: ~d~n", [ExpiredAt])
+            io:format("Payload expiredAt: ~w~n", [ExpiredAt])
     end.    
     {ok, Message}.
 
