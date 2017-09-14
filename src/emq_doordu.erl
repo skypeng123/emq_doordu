@@ -86,11 +86,12 @@ on_message_publish(Message, _Env) ->
     Payload = Message#mqtt_message.payload,
     PayloadData = jsx:decode(Payload, [return_maps]), 
     %%io:fwrite("PayloadData:~w~n",[PayloadData]),
-    Cmd = maps:get(<<"cmd">>,PayloadData),   
+    Cmd = maps:get(<<"cmd">>,PayloadData,[]]),   
     io:fwrite("Payload cmd:~s~n",[Cmd]),
-    ExpiredAt = maps:get(<<"expiredAt">>,PayloadData),
+    ExpiredAt = maps:get(<<"expiredAt">>,PayloadData,[]),
+    io:format("Payload expiredAt: ~w~n", [ExpiredAt]),
     if 
-        Cmd == "makeCall" ->
+        Cmd == <<"makeCall">> ->
             io:format("Payload expiredAt: ~w~n", [ExpiredAt])
     end, 
     {ok, Message}.
