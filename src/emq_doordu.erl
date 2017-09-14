@@ -87,8 +87,8 @@ on_message_publish(Message, _Env) ->
     PayloadData = jsx:decode(Payload, [return_maps]), 
     %%io:fwrite("PayloadData:~w~n",[PayloadData]),
     Cmd = maps:get(<<"cmd">>,PayloadData),   
-    io:fwrite("Payload cmd:~w~n",[Cmd]),
-    ExpiredAt = maps:get("expiredAt",PayloadData),
+    io:fwrite("Payload cmd:~s~n",[Cmd]),
+    ExpiredAt = maps:get(<<"expiredAt">>,PayloadData),
     if 
         Cmd == "makeCall" ->
             io:format("Payload expiredAt: ~w~n", [ExpiredAt])
