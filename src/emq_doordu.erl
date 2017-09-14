@@ -84,17 +84,19 @@ on_message_publish(Message = #mqtt_message{topic = <<"$SYS/", _/binary>>}, _Env)
 on_message_publish(Message, _Env) ->
     io:format("publish ~s~n", [emqttd_message:format(Message)]),
     Payload = Message#mqtt_message.payload,
-    PayloadData = jsx:decode(Payload, [return_maps]), 
-    %%io:fwrite("PayloadData:~w~n",[PayloadData]),
-    Cmd = maps:get(<<"cmd">>,PayloadData,[]]),   
-    io:fwrite("Payload cmd:~s~n",[Cmd]),
-    ExpiredAt = maps:get(<<"expiredAt">>,PayloadData,[]),
-    io:format("Payload expiredAt: ~w~n", [ExpiredAt]),
-    if 
-        Cmd == <<"makeCall">> ->
-            io:format("Payload expiredAt: ~w~n", [ExpiredAt])
-    end, 
-    {ok, Message}.
+    case jsx:is_json(Payload) of
+        true -> 
+            PayloadData = jsx:decode(Payload, [return_maps]), 
+            Cmd = maps:get(<<"cmd">>,PayloadData,[]),  
+            ExpiredAt = maps:get(<<"expiredAt">>,PayloadData,[]),
+            if 
+                Cmd == <<"makeCall">> ->
+                    io:format("Payload expiredAt: ~w~n", [ExpiredAt])
+            end,
+            {ok, Message};
+        false ->
+            {ok, Message}         
+    end.
 
 on_message_delivered(ClientId, Username, Message, _Env) ->
     io:format("delivered to client(~s/~s): ~s~n", [Username, ClientId, emqttd_message:format(Message)]),
