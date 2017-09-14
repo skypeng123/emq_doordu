@@ -85,10 +85,14 @@ on_message_publish(Message, _Env) ->
     {ok, Message}.
 
 on_message_delivered(ClientId, Username, Message, _Env) ->
+    Payload = Message#mqtt_message.payload,
+    io:format("payload ~s~n", [Payload]),
     lager:debug("delivered to client(~s/~s): ~s~n", [ClientId, Username, emqttd_message:format(Message)]),
     {ok, Message}.
 
 on_message_acked(ClientId, Username, Message, _Env) ->
+    Payload = Message#mqtt_message.payload,
+    io:format("payload ~s~n", [Payload]),
     lager:debug("client(~s/~s) acked: ~s~n", [ClientId, Username, emqttd_message:format(Message)]),
     {ok, Message}.
 
