@@ -93,9 +93,9 @@ on_message_delivered(ClientId, Username, Message, _Env) ->
             PayloadData = jsx:decode(Payload, [return_maps]), 
             Cmd = maps:get(<<"cmd">>,PayloadData,[]),  
             ExpiredAt = maps:get(<<"expiredAt">>,PayloadData,[]),
-            if 
+            case  Cmd == <<"makeCall">> of
                 %%呼叫检查有效时间
-                Cmd == <<"makeCall">> ->
+                true -> 
                     Nowtime = timestamp(), 
                     %%有效期小于当前时间，已过期，停止发送消息
                     case ExpiredAt < Nowtime  of
@@ -107,9 +107,9 @@ on_message_delivered(ClientId, Username, Message, _Env) ->
                             Ret = ok                           
                     end,
                     {Ret, Message};   
-                Cmd /= <<"makeCall">> ->    
+                false ->    
                     {ok, Message}
-            end;            
+            end;           
         false ->
             {ok, Message}         
     end.    
@@ -121,17 +121,6 @@ on_message_acked(ClientId, Username, Message, _Env) ->
 timestamp() ->  
     {M, S, _} = os:timestamp(),  
     M * 1000000 + S.
-
-has_expired(ExpiredAt) ->
-    Nowtime = timestamp(), 
-    case ExpiredAt < Nowtime  of
-        true -> 
-            Ret = stop; 
-        false ->
-            Ret = ok
-    end,
-    {Ret}
-
 
 %% Called when the plugin application stop
 unload() ->
