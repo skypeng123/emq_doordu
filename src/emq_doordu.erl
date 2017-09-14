@@ -91,7 +91,8 @@ on_message_publish(Message, _Env) ->
             ExpiredAt = maps:get(<<"expiredAt">>,PayloadData,[]),
             if 
                 Cmd == <<"makeCall">> ->
-                    io:format("Payload expiredAt: ~w~n", [ExpiredAt])
+                    Nowtime = timestamp(),                    
+                    io:format("Payload expiredAt: ~w ~w ~n", [ExpiredAt,Nowtime])
             end,
             {ok, Message};
         false ->
@@ -106,6 +107,9 @@ on_message_acked(ClientId, Username, Message, _Env) ->
     io:format("client(~s/~s) acked: ~s~n", [Username, ClientId, emqttd_message:format(Message)]),
     {ok, Message}.
 
+timestamp() ->  
+    {M, S, _} = os:timestamp(),  
+    M * 1000000 + S.   
 
 %% Called when the plugin application stop
 unload() ->
