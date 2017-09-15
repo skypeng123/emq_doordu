@@ -48,45 +48,46 @@ load(Env) ->
 
 
 on_client_connected(ConnAck, Client = #mqtt_client{client_id = ClientId}, _Env) ->
-    io:format("client ~s connected, connack: ~w~n", [ClientId, ConnAck]),
+    %%io:format("client ~s connected, connack: ~w~n", [ClientId, ConnAck]),
     {ok, Client}.
 
 on_client_disconnected(Reason, _Client = #mqtt_client{client_id = ClientId}, _Env) ->
-    io:format("client ~s disconnected, reason: ~w~n", [ClientId, Reason]),
+    %%io:format("client ~s disconnected, reason: ~w~n", [ClientId, Reason]),
     ok.
 
 on_client_subscribe(ClientId, Username, TopicTable, _Env) ->
-    io:format("client(~s/~s) will subscribe: ~p~n", [Username, ClientId, TopicTable]),
+    %%io:format("client(~s/~s) will subscribe: ~p~n", [Username, ClientId, TopicTable]),
     {ok, TopicTable}.
     
 on_client_unsubscribe(ClientId, Username, TopicTable, _Env) ->
-    io:format("client(~s/~s) unsubscribe ~p~n", [ClientId, Username, TopicTable]),
+    %%io:format("client(~s/~s) unsubscribe ~p~n", [ClientId, Username, TopicTable]),
     {ok, TopicTable}.
 
 on_session_created(ClientId, Username, _Env) ->
-    io:format("session(~s/~s) created.", [ClientId, Username]).
+    %%io:format("session(~s/~s) created.", [ClientId, Username]).
 
 on_session_subscribed(ClientId, Username, {Topic, Opts}, _Env) ->
-    io:format("session(~s/~s) subscribed: ~p~n", [Username, ClientId, {Topic, Opts}]),
+    %%io:format("session(~s/~s) subscribed: ~p~n", [Username, ClientId, {Topic, Opts}]),
     {ok, {Topic, Opts}}.
 
 on_session_unsubscribed(ClientId, Username, {Topic, Opts}, _Env) ->
-    io:format("session(~s/~s) unsubscribed: ~p~n", [Username, ClientId, {Topic, Opts}]),
+    %%io:format("session(~s/~s) unsubscribed: ~p~n", [Username, ClientId, {Topic, Opts}]),
     ok.
 
 on_session_terminated(ClientId, Username, Reason, _Env) ->
-    io:format("session(~s/~s) terminated: ~p.", [ClientId, Username, Reason]).
+    %%io:format("session(~s/~s) terminated: ~p.", [ClientId, Username, Reason]),
+    ok.
 
 %% transform message and return
 on_message_publish(Message = #mqtt_message{topic = <<"$SYS/", _/binary>>}, _Env) ->
     {ok, Message};
 
 on_message_publish(Message, _Env) ->
-    io:format("publish ~s~n", [emqttd_message:format(Message)]),
+    %%io:format("publish ~s~n", [emqttd_message:format(Message)]),
     {ok, Message}.
 
 on_message_delivered(ClientId, Username, Message, _Env) ->
-    io:format("delivered to client(~s/~s): ~s~n", [Username, ClientId, emqttd_message:format(Message)]),
+    %%io:format("delivered to client(~s/~s): ~s~n", [Username, ClientId, emqttd_message:format(Message)]),
     Payload = Message#mqtt_message.payload,
     case jsx:is_json(Payload) of
         true -> 
@@ -100,7 +101,7 @@ on_message_delivered(ClientId, Username, Message, _Env) ->
                     %%有效期小于当前时间，已过期，停止发送消息
                     case ExpiredAt < Nowtime  of
                         true -> 
-                            io:format("delivered to client(~s/~s): ~s has expired!(~w/~w) ~n", [Username, ClientId, emqttd_message:format(Message),ExpiredAt,Nowtime]),                       
+                            %%io:format("delivered to client(~s/~s): ~s has expired!(~w/~w) ~n", [Username, ClientId, emqttd_message:format(Message),ExpiredAt,Nowtime]),                       
                             stop;                            
                         false ->
                             %%io:format("message not expired: ~w ~w ~n", [ExpiredAt,Nowtime]),
@@ -114,7 +115,7 @@ on_message_delivered(ClientId, Username, Message, _Env) ->
     end.    
 
 on_message_acked(ClientId, Username, Message, _Env) ->
-    io:format("client(~s/~s) acked: ~s~n", [Username, ClientId, emqttd_message:format(Message)]),
+    %%io:format("client(~s/~s) acked: ~s~n", [Username, ClientId, emqttd_message:format(Message)]),
     {ok, Message}.
 
 timestamp() ->  
