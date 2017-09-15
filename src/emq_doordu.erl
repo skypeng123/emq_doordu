@@ -83,7 +83,7 @@ on_message_publish(Message = #mqtt_message{topic = <<"$SYS/", _/binary>>}, _Env)
 
 on_message_publish(Message, _Env) ->
     io:format("publish ~s~n", [emqttd_message:format(Message)]),
-    {stop}.
+    {stop,Message}.
     %%{ok, Message}.
 
 on_message_delivered(ClientId, Username, Message, _Env) ->
