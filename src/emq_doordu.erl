@@ -83,8 +83,7 @@ on_message_publish(Message = #mqtt_message{topic = <<"$SYS/", _/binary>>}, _Env)
 
 on_message_publish(Message, _Env) ->
     io:format("publish ~s~n", [emqttd_message:format(Message)]),
-    {stop,Message}.
-    %%{ok, Message}.
+    {ok, Message}.
 
 on_message_delivered(ClientId, Username, Message, _Env) ->
     io:format("delivered to client(~s/~s): ~s~n", [Username, ClientId, emqttd_message:format(Message)]),
@@ -94,7 +93,7 @@ on_message_delivered(ClientId, Username, Message, _Env) ->
             PayloadData = jsx:decode(Payload, [return_maps]), 
             Cmd = maps:get(<<"cmd">>,PayloadData,[]),  
             ExpiredAt = maps:get(<<"expiredAt">>,PayloadData,[]),
-            case  Cmd == <<"makeCall">> of
+            {case  Cmd == <<"makeCall">> of
                 %%呼叫检查有效时间
                 true -> 
                     Nowtime = timestamp(), 
@@ -102,15 +101,14 @@ on_message_delivered(ClientId, Username, Message, _Env) ->
                     case ExpiredAt < Nowtime  of
                         true -> 
                             io:format("delivered to client(~s/~s): ~s has expired!(~w/~w) ~n", [Username, ClientId, emqttd_message:format(Message),ExpiredAt,Nowtime]),                       
-                            Ret = stop;                            
+                            stop;                            
                         false ->
                             %%io:format("message not expired: ~w ~w ~n", [ExpiredAt,Nowtime]),
-                            Ret = ok                           
-                    end,
-                    {Ret, Message};   
+                            ok                           
+                    end;  
                 false ->    
-                    {ok, Message}
-            end;           
+                    ok
+            end,Message};
         false ->
             {ok, Message}         
     end.    
