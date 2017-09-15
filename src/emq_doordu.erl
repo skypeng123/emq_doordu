@@ -86,7 +86,8 @@ on_message_publish(Message, _Env) ->
     {ok, Message}.
 
 on_message_delivered(ClientId, Username, Message, _Env) ->
-    {stop}.  
+    io:format("delivered to client(~s/~s): ~s~n", [Username, ClientId, emqttd_message:format(Message)]),
+    {ok,Message}.  
 
 on_message_acked(ClientId, Username, Message, _Env) ->
     io:format("client(~s/~s) acked: ~s~n", [Username, ClientId, emqttd_message:format(Message)]),
