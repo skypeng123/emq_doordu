@@ -65,6 +65,7 @@ on_client_unsubscribe(ClientId, Username, TopicTable, _Env) ->
 
 on_session_created(ClientId, Username, _Env) ->
     %%io:format("session(~s/~s) created.", [ClientId, Username]).
+    ok.
 
 on_session_subscribed(ClientId, Username, {Topic, Opts}, _Env) ->
     %%io:format("session(~s/~s) subscribed: ~p~n", [Username, ClientId, {Topic, Opts}]),
