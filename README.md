@@ -8,25 +8,35 @@ Configuration
 etc/emq_doordu.conf:
 
 ```
-## Call message expiry interval. Never expired if 0
-## h - hour
-## m - minute
-## s - second
-doordu.call_expiry_interval = 0
-
 ##Call message cmd
-doordu.call_cmd = 
+doordu.call_cmd = makeCall
+
+##Hangup call message cmd
+doordu.hangup_cmd = hangUpCall
+
+##send offline message : on / off
+doordu.offline_message = off
+
+##sent stats : on / off
+doordu.sent_stats = on
+
 ```
-
-License
--------
-
-Apache License Version 2.0
 
 Author
 ------
 
 Jipeng at doordu.com
+
+Make
+-----------------
+vim emq-relx/Makefile
+
+DEPS += emq_doordu
+dep_plugin_name = git https://github.com/skypeng123/emq_doordu
+
+vim emq-relx/relx.config
+
+{emq_doordu, load}
 
 
 Plugin and Hooks

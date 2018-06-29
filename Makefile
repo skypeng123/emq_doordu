@@ -1,10 +1,11 @@
 PROJECT = emq_doordu
 PROJECT_DESCRIPTION = EMQ Doordu
-PROJECT_VERSION = 2.3
+PROJECT_VERSION = 1.2
 
-BUILD_DEPS = emqttd cuttlefish
+BUILD_DEPS = emqttd cuttlefish amqp_client
 dep_emqttd = git https://github.com/emqtt/emqttd master
 dep_cuttlefish = git https://github.com/emqtt/cuttlefish
+dep_amqp_client = git https://github.com/jbrisbin/amqp_client.git master
 
 ERLC_OPTS += +debug_info
 ERLC_OPTS += +'{parse_transform, lager_transform}'

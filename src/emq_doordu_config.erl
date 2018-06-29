@@ -15,7 +15,7 @@
 %%--------------------------------------------------------------------
 -module (emq_doordu_config).
 
--define(APP, emq_doordu).
+-include("emq_doordu.hrl").
 
 -export ([register/0, unregister/0]).
 
@@ -54,4 +54,5 @@ unregister_config() ->
 %% Internal Functions
 %%--------------------------------------------------------------------
 keys() ->
-    ["doordu.call_expiry_interval","doordu.call_cmd"].
+    ["doordu.call_expiry_interval","doordu.call_cmd","doordu.offline_message","doordu.send_stats","doordu.amqp_pool_size",
+      "doordu.amqp_host","doordu.amqp_port","doordu.amqp_username","doordu.amqp_password","doordu.amqp_heartbeat","doordu.auto_reconnect"].

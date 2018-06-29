@@ -18,6 +18,8 @@
 
 -behaviour(supervisor).
 
+-include("emq_doordu.hrl").
+
 %% API
 -export([start_link/0]).
 
@@ -27,6 +29,24 @@
 start_link() ->
     supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
-init([]) ->
-    {ok, { {one_for_one, 0, 1}, []} }.
+init([]) ->	
+	{ok,PoolSize} = application:get_env(?APP, amqp_pool_size),
+	{ok,Host} = application:get_env(?APP, amqp_host),
+	{ok,Port} = application:get_env(?APP, amqp_port),
+	{ok,User} = application:get_env(?APP, amqp_username),
+	{ok,PWD} = application:get_env(?APP, amqp_password),
+	{ok,Heartbeat} = application:get_env(?APP, amqp_heartbeat),
+	{ok,AutoReconnect} = application:get_env(?APP, auto_reconnect),
+	
+	PoolSpec = ecpool:pool_spec(?APP, ?APP, emq_doordu_cli, [
+			{pool_size, PoolSize},
+			{amqp_host, Host},
+			{amqp_port, Port},
+			{amqp_username, User},
+			{amqp_password, PWD},
+			{amqp_heartbeat, Heartbeat},
+			{auto_reconnect,AutoReconnect}
+		]),
+	
+    {ok, {{one_for_one, 10, 100}, [PoolSpec]}}.
 

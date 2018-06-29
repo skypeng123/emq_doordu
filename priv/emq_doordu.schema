@@ -1,13 +1,57 @@
 %%-*- mode: erlang -*-
 %% Doordu config mapping
 
-{mapping, "doordu.call_expiry_interval", "emq_doordu.call_expiry_interval", [
-  {default, 0},
-  {datatype, [integer, {duration, ms}]}
+{mapping, "doordu.call_cmd", "emq_doordu.call_cmd", [
+  {default, "makeCall"},
+  {datatype, string}
 ]}.
 
-{mapping, "doordu.call_cmd", "emq_doordu.call_cmd", [
+{mapping, "doordu.hangup_cmd", "emq_doordu.hangup_cmd", [
+  {default, "hangUpCall"},
+  {datatype, string}
+]}.
+
+{mapping, "doordu.offline_message", "emq_doordu.offline_message", [
+  {default, off},
+  {datatype, {enum, [on, off]}}
+]}.
+
+{mapping, "doordu.send_stats", "emq_doordu.send_stats", [
+  {default, on},
+  {datatype, {enum, [on, off]}}
+]}.
+
+{mapping, "doordu.amqp_pool_size", "emq_doordu.amqp_pool_size", [
+  {default, 8},
+  {datatype, integer}
+]}.
+
+{mapping, "doordu.amqp_host", "emq_doordu.amqp_host", [
+  {default, "127.0.0.1"},
+  {datatype, string}
+]}.
+
+{mapping, "doordu.amqp_port", "emq_doordu.amqp_port", [
+  {default, 5672},
+  {datatype, integer}
+]}.
+
+{mapping, "doordu.amqp_username", "emq_doordu.amqp_username", [
   {default, ""},
   {datatype, string}
 ]}.
 
+{mapping, "doordu.amqp_password", "emq_doordu.amqp_password", [
+  {default, ""},
+  {datatype, string}
+]}.
+
+{mapping, "doordu.amqp_heartbeat", "emq_doordu.amqp_heartbeat", [
+  {default, 30},
+  {datatype, integer}
+]}.
+
+{mapping, "doordu.auto_reconnect", "emq_doordu.auto_reconnect", [
+  {default, true},
+  {datatype, {enum, [true, false]}}
+]}.
